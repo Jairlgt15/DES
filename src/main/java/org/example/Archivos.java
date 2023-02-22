@@ -9,7 +9,6 @@ public class Archivos {
     public Archivos() {
     }
 
-    ;
 
 
     public FileWriter writeString(String nombreArchivo, String content) throws Exception {
@@ -35,7 +34,7 @@ public class Archivos {
         return fichero;
     }
 
-    public void readString(String nombreArchivo) throws Exception {
+    public String readString(String nombreArchivo) throws Exception {
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -51,7 +50,7 @@ public class Archivos {
             // Lectura del fichero
             String linea;
             while ((linea = br.readLine()) != null)
-                System.out.println(linea);
+                return linea;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -66,5 +65,6 @@ public class Archivos {
                 e2.printStackTrace();
             }
         }
+        return "no hay nada";
     }
 }
