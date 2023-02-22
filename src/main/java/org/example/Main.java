@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boolean salir = false;
-        TripleDes des = new TripleDes("9mng65v8jf4lxn93nabf981m", "a76nb5h9");
+
         Archivos archivos = new Archivos();
         int opcion; //Guardaremos la opcion del usuario
         do {
@@ -27,9 +27,13 @@ public class Main {
             opcion = Integer.parseInt(br.readLine());
             switch (opcion) {
                 case 1:
+
                     System.out.println("Has seleccionado la opcion 1");
                     System.out.println("Ingrese la fórmula secreta que será cifrada");
                     String nombre = br.readLine();
+                    System.out.println("Ingrese la clave para salvaguardar la fórmula");
+                    String claveS = br.readLine();
+                    TripleDes des = new TripleDes(claveS, "a76nb5h9");
                     String rutaNombre = des.cifrar(nombre);
                     archivos.writeString("prueba", rutaNombre);
                     break;

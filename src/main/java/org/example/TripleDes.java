@@ -43,7 +43,7 @@ public class TripleDes {
     public String cifrar(String mensaje) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Key key = generateKey();
         IvParameterSpec ivSpec = generateVector();
-        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance("TripleDES/CBC/PKCS5Padding");
         //cipher es un byte
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
         byte[] encodeValue = cipher.doFinal(mensaje.getBytes());
@@ -55,7 +55,7 @@ public class TripleDes {
     public String descifrar(String mensajeCifrado) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Key key = generateKey();
         IvParameterSpec ivSpec = generateVector();
-        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance("TripleDES/CBC/PKCS5Padding");
         //cipher es un byte
         cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
         byte[] decodeValue =Base64.getDecoder().decode(mensajeCifrado);
