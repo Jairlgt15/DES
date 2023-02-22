@@ -6,6 +6,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,16 +49,20 @@ public class TripleDes {
         Key key = generateKey();
         IvParameterSpec ivSpec = generateVector();
         Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
-        String originalContent = "some secret message";
-        Path tempFile = Files.createTempFile("temp", "txt");
         Archivos archivos = new Archivos();
-        archivos.writeString(tempFile, originalContent);
+        FileWriter fichero= archivos.writeString("prueba", mensaje);
+        Path tempFile= (Path) fichero;
         byte[] fileBytes = Files.readAllBytes(tempFile);
         //cipher es un byte
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
         byte[] encodeValue = cipher.doFinal(fileBytes);
         String codeValue = Base64.getEncoder().encodeToString(encodeValue);
-        return codeValue;
+
+        try (FileOutputStream stream = new FileOutputStream(tempFile.toFile())) {
+            stream.write(encodeValue);
+        }
+        String fileContent = archivos.readString(tempFile);
+        return fileContent;
     }
 
     public String cifrarByte(byte[] encodeValue) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
@@ -70,13 +76,14 @@ public class TripleDes {
     }
 
     //descifrado
-    public String descifrar(String mensajeCifrado) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String descifrar(Path tempFile) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
         Key key = generateKey();
         IvParameterSpec ivSpec = generateVector();
         Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
         //cipher es un byte
         cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
-        byte[] decodeValue = Base64.getDecoder().decode(mensajeCifrado);
+        byte[] decodeValue = Files.readAllBytes(tempFile);
+        //byte[] decodeValue = Base64.getDecoder().decode(mensajeCifrado);
         byte[] valorDesc = cipher.doFinal(decodeValue);
         String mensaje = new String(valorDesc);
         return mensaje;

@@ -29,12 +29,7 @@ public class Main {
                     System.out.println("Has seleccionado la opcion 1");
                     System.out.println("Ingrese la fórmula secreta que será cifrada");
                     String nombre = br.readLine();
-                    Archivos archivos = new Archivos();
-                    byte[] encode = archivos.CrearArchivo(nombre);
-                    String nombreCifrado = des.cifrarByte(encode);
-                    System.out.println(nombreCifrado);
-
-                    //TODO aqui va la parte del documento a editar
+                    String rutaNombre = des.cifrar(nombre);
                     break;
                 case 2:
                     System.out.println("Has seleccionado la opcion 2");

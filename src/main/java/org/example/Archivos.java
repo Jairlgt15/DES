@@ -1,37 +1,70 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Archivos {
 
-   public Archivos(){};
-
-    public  byte[] CrearArchivo(String mensaje) throws Exception {
-        String originalContent = "";
-        Path tempFile = Files.createTempFile("temp", "txt");
-        writeString(tempFile, originalContent);
-        byte[] fileBytes = Files.readAllBytes(tempFile);
-        return fileBytes;
+    public Archivos() {
     }
 
-    public void writeString(Path path, String content) throws Exception {
-        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            writer.write(content);
-        }
-    }
-    public String readString(Path path) throws Exception {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line);
+    ;
+
+
+    public FileWriter writeString(String nombreArchivo, String content) throws Exception {
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        String ruta = "C:/Users/Jair";
+        try {
+            fichero = new FileWriter(ruta + "\\" + nombreArchivo + ".txt");
+            pw = new PrintWriter(fichero);
+            pw.write(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Nuevamente aprovechamos el finally para
+                // asegurarnos que se cierra el fichero.
+                if (null != fichero)
+                    fichero.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
             }
         }
-        return resultStringBuilder.toString();
+        return fichero;
+    }
+
+    public void readString(String nombreArchivo) throws Exception {
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        String ruta = "C:/Users/Jair";
+
+        try {
+            // Apertura del fichero y creacion de BufferedReader para poder
+            // hacer una lectura comoda (disponer del metodo readLine()).
+            archivo = new File(ruta + "\\" + nombreArchivo + ".txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+
+            // Lectura del fichero
+            String linea;
+            while ((linea = br.readLine()) != null)
+                System.out.println(linea);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // En el finally cerramos el fichero, para asegurarnos
+            // que se cierra tanto si todo va bien como si salta
+            // una excepcion.
+            try {
+                if (null != fr) {
+                    fr.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
     }
 }
