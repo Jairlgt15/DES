@@ -10,9 +10,46 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Main {
+    static final String JDBC_DRIVER = "org.h2.Driver";
+    static final String jdbcURL = "jdbc:h2:./user_db";
+    static final String USER = "sa";
+    static final String PASS = "";
     public static void main(String[] args) throws Exception {
+
+        try {
+            Connection connection = DriverManager.getConnection(jdbcURL);
+            System.out.println("TA BIEN");
+            System.out.println("Connected to H2 in-memory database.");
+
+            String sql = "Create table students (ID int primary key, name varchar(50))";
+
+            Statement statement = connection.createStatement();
+
+            statement.execute(sql);
+
+            System.out.println("Created table students.");
+
+            sql = "Insert into students (ID, name) values (1, 'Nam Ha Minh')";
+
+            int rows = statement.executeUpdate(sql);
+
+            if (rows > 0) {
+                System.out.println("Inserted a new row.");
+            }
+
+            connection.close();
+        }
+        catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boolean salir = false;
 
