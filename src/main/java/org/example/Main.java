@@ -69,6 +69,7 @@ public class Main {
                     System.out.println("Ingrese la fórmula secreta que será cifrada");
                     String nombre = br.readLine();
                     System.out.println("Ingrese la clave para salvaguardar la fórmula");
+                    System.out.println("OJO- Debe ser de 24 bytes|");
                     String claveS = br.readLine();
                     TripleDes des = new TripleDes(claveS, "a76nb5h9");
                     String rutaNombre = des.cifrar(nombre);
